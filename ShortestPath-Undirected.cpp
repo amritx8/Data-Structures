@@ -37,11 +37,6 @@ void ShortestPathUsingBFS(int s, int n, vector<int> adjList[]){
     }
 }
 
-// Only for DAG
-void ShortestPathUsingTopologicalSort(int s, int n, vector<pair<int,int>> adjLsit[]){
-
-}
-
 int main(){
     int n;
     cin>>n;

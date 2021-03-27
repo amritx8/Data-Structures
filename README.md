@@ -1,1 +1,1 @@
-# This repo contains all the basic graph algorithms.
+# This repository contains all the standard graph algorithms.
