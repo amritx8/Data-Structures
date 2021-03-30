@@ -1,1 +1,1 @@
-# This repository contains all the standard graph algorithms.
+# This repository contains all the data structure.
