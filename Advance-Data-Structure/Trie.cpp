@@ -38,6 +38,7 @@ bool search(Trie *root, string s) {
 
         root = root->children[s[i]];
     }
+    
     return root->isword;
 }
 

@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// Range sum query and point update segment tree.
+// Range sum query and range update segment tree.
 
 const int MX = 100000;
 int arr[MX], tree[4 * MX];
@@ -47,28 +47,6 @@ int query(int at, int start, int end, int l, int r) {
     return query(leftChild, start, mid, l, r) + query(rightChild, mid + 1, end, l, r);
 }
 
-void update(int at, int start, int end, int index) {
-
-    if(index < start or end < index) {
-
-        return;
-    }
-
-    if(start == end) {
-
-        tree[at] = arr[index];
-    }
-
-    int mid = (start + end) / 2;
-    int leftChild = 2 * at + 1;
-    int rightChild = 2 * at + 2;
-
-    update(leftChild, start, mid, index);
-    update(leftChild, mid + 1, end, index);
-
-    tree[at] = tree[leftChild] + tree[rightChild];
-}
-
 int main() {
 
     int n;
@@ -85,15 +63,6 @@ int main() {
     cin >> l >> r;
 
     cout << query(0, 0, n - 1, l, r);
-
-    int index, val;
-    cin >> index >> val;
-
-    // First update the actual array.
-    arr[index] = val;
-
-    // then update the segment tree.
-    update(0, 0, n - 1, index);
 
     return 0;
 }
