@@ -1,1 +1,1 @@
-# This repository contains all the data structure.
+# This repository contains all the data structures.
