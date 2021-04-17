@@ -130,6 +130,7 @@ struct cmp{
     {
         // return "true" if "p1" is ordered
         // before "p2", for example:
+	// so if it is true that means the swap will take place else it won't. Follow https://leetcode.com/problems/find-k-pairs-with-smallest-sums for more example
         return p1.prop1 < p2.prop1;
     }
 };
