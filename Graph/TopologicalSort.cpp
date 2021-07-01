@@ -2,152 +2,149 @@
 using namespace std;
 
 // Topological Sort is only defined for DAG.
+// TC = O(V + E) and SC = O(V) for all the algorithms.
 
-// TC - O(V + E) and SC - O(V) for all the algorithm.
+// Approch 1 - Using DFS. 
+void TopologicalSortDFS(int at, vector<int> adjList[], vector<bool> &visited, vector<int> &order){
 
+    visited[at] = 1;
 
-// Using Dfs. 
-void TopologicalSortDfs(int u, vector<int> adjList[], vector<bool> &visit, vector<int> &ordering){
+    for(int to : adjList[at]){
 
-    visit[u] = 1;
+        if(!visited[to]){
 
-    for(auto x:adjList[u]){
-
-        if(!visit[x]){
-
-            TopologicalSortDfs(x, adjList, visit, ordering);
+            TopologicalSortDFS(to, adjList, visited, order);
         }
     }
 
-    ordering.push_back(u);
+    order.push_back(at);
 }
-void TopologicalSortUsingDfs(int n, vector<int> adjList[]){
 
-    vector<bool> visit(n,0);
-    vector<int> ordering;
+void TopologicalSortUsingDFS(int n, vector<int> adjList[]){
 
-    for(int i=0; i<n; i++){
+    vector<bool> visit(n, 0);
+    vector<int> order;
+
+    for(int i = 0; i < n; i++) {
 
         if(!visit[i]){
 
-            TopologicalSortDfs(i, adjList, visit, ordering);
+            TopologicalSortDFS(i, adjList, visit, order);
         }
     }
 
-    for(int i=n-1; i>=0; i--){
+    for(int i= n - 1; i >= 0; i--) {
 
-        cout<<ordering[i]<<" ";
+        cout << order[i]<<" ";
     }
 }
 
+// Approch 2 - Using Khan's Algorithm.
+void TopologicalSortUsingKhansAlgorithm(int n, vector<int> adjList[]){
 
-// Using Khan's Algorithm.
-void TopologicalSortUsingKhanAlgorithm(int n, vector<int> adjList[]){
+    vector<int> inDegree(n, 0), order;
 
-    vector<int> inDegree(n,0), ordering;
+    for(int i = 0; i < n; i++){
 
-    for(int i=0; i<n; i++){
+        for(int j : adjList[i]){
 
-        for(auto x:adjList[i]){
-
-            inDegree[x]++;
+            inDegree[j]++;
         }
     }
 
-    queue<int> Q;
+    queue<int> q;
 
-    for(int i=0; i<n; i++){
+    for(int i = 0; i < n; i++){
 
-        if(inDegree[i]==0){
+        if(inDegree[i] == 0){
             
-            Q.push(i);
+            q.push(i);
         }
     }
 
-    while(!Q.empty()){
+    while(!q.empty()) {
 
-        int u = Q.front();
-        Q.pop();
-        ordering.push_back(u);
+        int at = q.front();
 
-        for(auto x:adjList[u]){
+        q.pop();
+        
+        order.push_back(at);
 
-            inDegree[x]--;
-            if(inDegree[x]==0){
+        for(int to : adjList[at]) {
 
-                Q.push(x);
+            inDegree[to]--;
+
+            if(inDegree[to] == 0) {
+
+                q.push(to);
             }
         }
     }
 
-    if(ordering.size()!=n){
+    if(order.size() != n) {
 
-        cout<<"There exists a cycle in the graph.";
+        cout << "Graph is cyclic";
+
         return;
     }
 
-    for(auto x:ordering){
+    for(int i : order){
 
-        cout<<x<<" ";
+        cout << i << " ";
     }
 }
 
+// Approch 3 - Using DFS and departure time.
+void TopologicalSortDFS2(int at, vector<int> adjList[], vector<bool> &visited, int &time, vector<int> &order){
 
-// Using Dfs and departure time.
-void TopologicalSortDfs2(int u, vector<int> adjList[], vector<bool> &visit, int *time, vector<int> &ordering){
+    visited[at] = 1;
 
-    visit[u] = 1;
+    for(int to : adjList[at]){
 
-    for(auto x:adjList[u]){
+        if(!visited[to]){
 
-        if(!visit[x]){
-
-            TopologicalSortDfs2(x, adjList, visit, time, ordering);
+            TopologicalSortDFS2(to, adjList, visited, time, order);
         }
     }
 
-    ordering[(*time)++] = u;
+    order[time++] = at;
 }
-void TopologicalSortUsingDepartureTimeOfVertex(int n, vector<int> adjList[]){
 
-    vector<int> ordering(n,0);
-    vector<bool> visit(n,0);
+void TopologicalSortUsingDepartureTime(int n, vector<int> adjList[]){
+
+    vector<int> order(n, 0);
+    vector<bool> visit(n, 0);
 
     int time = 0;
 
-    for(int i=0; i<n; i++){
+    for(int i = 0; i < n; i++) {
 
         if(!visit[i]){
             
-            TopologicalSortDfs2(i, adjList, visit, &time, ordering);
+            TopologicalSortDFS2(i, adjList, visit, time, order);
         }
     }
 
-    for(int i=n-1; i>=0; i--){
+    for(int i= n - 1; i >= 0; i--) {
 
-        cout<<ordering[i]<<" ";
+        cout<<order[i]<<" ";
     }
 }
 
-void AllTopologicalOrdering(int n, vector<int> adjList[]) {
+int main() {
 
-    
-}
+    int n, m;
+    cin >> n >> m;
 
-
-int main(){
-    int n;
-    cin>>n;
     vector<int> adjList[n];
 
-    int m; cin>>m;
-    for(int i=0; i<m; i++){
-        int u,v;
-        cin>>u>>v;
+    for(int i = 0; i < m; i++) {
+
+        int u, v;
+        cin >> u >> v;
+
         adjList[u].push_back(v);
     }
-
-    TopologicalSortUsingDepartureTimeOfVertex(n, adjList);
 
     return 0;
 }
