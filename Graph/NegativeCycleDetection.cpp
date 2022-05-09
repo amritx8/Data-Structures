@@ -42,7 +42,7 @@ bool BellmenFord(int n, set<edge> &edgeList){
         int to = itr.to;
         int weight = itr.weigth;
 
-        if(distance[from]!=INF and distance[to] < distance[to] + weight) {
+        if(distance[from]!=INF and distance[to] < distance[from] + weight) {
 
             return true;
         }
